@@ -200,15 +200,22 @@ class PyMailer():
             sender = "%s <%s>" % (self.from_name, self.from_email)
 
             # send the actual email
-            smtp_server = smtplib.SMTP(host=config.SMTP_HOST, port=config.SMTP_PORT)
+            if config.SMTP_SSL:
+                smtp_server = smtplib.SMTP_SSL(host=config.SMTP_HOST, port=config.SMTP_PORT)
+            else:
+			    smtp_server = smtplib.SMTP(host=config.SMTP_HOST, port=config.SMTP_PORT)
+            
             try:
+                if config.SMTP_AUTH:
+                    smtp_server.login(config.USERNAME, config.PASSWORD)
+
                 smtp_server.sendmail(sender, recipient, message)
 
                 # save the last recipient to the stats file incase the process fails
                 self._stats("LAST RECIPIENT: %s" % recipient)
 
                 # allow the system to sleep for .25 secs to take load off the SMTP server
-                sleep(0.25)
+                sleep(TIMETOWAIT)
             except:
                 logging.error("Recipient email address failed: %s" % recipient)
                 self._retry_handler(recipient_data)

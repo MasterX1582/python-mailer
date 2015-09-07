@@ -14,6 +14,13 @@ STATS_FILE = '/tmp/pymailer-%s.stat' % str(datetime.now()).replace(' ', '-').rep
 SMTP_HOST = 'localhost'
 SMTP_PORT = '25'
 
+SMTP_SSL = 0 # set to 1 to enable SSL
+SMTP_AUTH = 0 # set to 1 to enable authentication
+USERNAME = "username"
+PASSWORD = "password"
+
+TIMETOWAIT = 4
+
 # the address and name the email comes from
 FROM_NAME = 'Company Name'
 FROM_EMAIL = 'company@example.com'
